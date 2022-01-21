@@ -9,7 +9,7 @@ const chatRoom2 = ChatRoomsData[2];
 export default function TabOneScreen() {
 
   const logout = () => {
-    Auth.signout();
+    Auth.signOut();
   }
   return (
     <View style={styles.page}>
