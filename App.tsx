@@ -15,7 +15,7 @@ function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  Auth.currentAuthenticatedUser().then(console.log);
+  Auth.currentAuthenticatedUser()
 
   if (!isLoadingComplete) {
     return null;

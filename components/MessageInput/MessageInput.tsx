@@ -1,14 +1,32 @@
 import React, {useState} from 'react'
 import { StyleSheet, Text, View, TextInput,Pressable } from 'react-native';
 import { SimpleLineIcons, Feather, MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons';
+import {DataStore, Auth} from 'aws-amplify';
+import {Message, ChatRoom} from '../../src/models';
 
-const MessageInput = () => {
+const MessageInput = ({chatRoom}) => {
     const [message, setMessage] = useState('');
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
+        
+        const user = await Auth.currentAuthenticatedUser();
+        const newMessage = await DataStore.save(new Message({
+            content: message,
+            userID: user.attributes.sub,
+            chatroomID: chatRoom.id,
+        }))
+
         console.log("sending: ", message);
+        updateLastMessage(newMessage);
         setMessage('');
     }
+
+    const updateLastMessage = async (newMessage) => {
+        DataStore.save(ChatRoom.copyOf(chatRoom, updatedChatRoom => {
+            updatedChatRoom.LastMessage = newMessage;
+        }))
+    }
+
     const onPlusClick = () => {
         console.warn("Plus is clicked");
     }

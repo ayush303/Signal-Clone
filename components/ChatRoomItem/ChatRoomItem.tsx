@@ -3,14 +3,24 @@ import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from 'rea
 import { useNavigation } from '@react-navigation/core';
 import styles from './styles';
 import {DataStore, Auth} from 'aws-amplify';
-import { ChatRoomUser, User } from '../../src/models';
+import { ChatRoomUser, User, Message } from '../../src/models';
 
 export default function ChatRoomItem({ chatRoom }) {
     //const [users, setUsers] = useState<User[]>([]); // all the users in this chatroomID
     const [user, setUser] = useState<User|null>(null); // to display user
-    console.log(chatRoom);
+    const [lastMessage, setLastMessage] = useState<Message|undefined>();
+    //console.log(chatRoom);
     const navigation = useNavigation();
     //console.log("Current ChatRoom: \n",chatRoom);
+
+    useEffect(() => {
+        if(!chatRoom.chatRoomLastMessageId) {
+            return;
+        } else {
+            DataStore.query(Message, chatRoom.chatRoomLastMessageId).then(setLastMessage);
+        }
+    }, [])
+
     useEffect(() => {
         const fetchUsers = async () => {
             const fetchedUsers = (await DataStore.query(ChatRoomUser))
@@ -43,10 +53,10 @@ export default function ChatRoomItem({ chatRoom }) {
             <View style={styles.rightContainer}>
                 <View style={styles.row}>
                     <Text style={styles.name}> {user.name} </Text>
-                    <Text style={styles.text}> {chatRoom.lastMessage?.createdAt} </Text>
+                    <Text style={styles.text}> {lastMessage?.createdAt} </Text>
                 </View>
                 <Text numberOfLines={1} style={styles.text}>
-                    {chatRoom.lastMessage?.content}
+                    {lastMessage?.content}
                 </Text>
             </View>
         </Pressable>
