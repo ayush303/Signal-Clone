@@ -1,5 +1,5 @@
 export default [{
-  id: '1',
+  id: '78e9e7cb-2eda-4d57-b111-0396811c12f3',
   users: [{
     id: 'u1',
     name: 'Vadim',
@@ -33,7 +33,7 @@ export default [{
   },
   newMessage: 2,
 }, {
-  id: '3',
+  id: 'b1a5e04f-897a-4aeb-ba91-136fe9468d36',
   users: [{
     id: 'u1',
     name: 'Vadim',
@@ -49,7 +49,7 @@ export default [{
     createdAt: '2020-10-02T14:48:00.000Z',
   }
 }, {
-  id: '4',
+  id: '3',
   users: [{
     id: 'u1',
     name: 'Vadim',
@@ -65,7 +65,7 @@ export default [{
     createdAt: '2020-09-29T14:48:00.000Z',
   }
 }, {
-  id: '5',
+  id: '573143ae-6cb9-468d-bacc-d7299203fe5f',
   users: [{
     id: 'u1',
     name: 'Vadim',
@@ -81,7 +81,7 @@ export default [{
     createdAt: '2020-09-30T14:48:00.000Z',
   }
 }, {
-  id: '6',
+  id: '5',
   users: [{
     id: 'u1',
     name: 'Vadim',
@@ -97,7 +97,7 @@ export default [{
     createdAt: '2020-10-02T15:40:00.000Z',
   }
 }, {
-  id: '7',
+  id: '5d843804-54fe-479d-a7d5-acaf27eb2ae9',
   users: [{
     id: 'u1',
     name: 'Vadim',

@@ -9,13 +9,19 @@ export default function UserItems({ user }) {
     
     const navigation = useNavigation();
     const onPress = async () => {
+
+        // TODO if there is already a chat between these 2 users
+        // then redirect to the existing chatRoom user
+        // otherwise, create a new chatRoom with these users 
+        
+
         // When we click on user Create a chatroom with him
         const newChatRoom = await DataStore.save(new ChatRoom({newMessages: 0}));
 
         // connnect authenticated user with the chatroom //
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         const dbUser = await DataStore.query(User, authenticatedUser.attributes.sub);  
-        console.log(dbUser); 
+        //console.log(dbUser); 
 
         await DataStore.save(new ChatRoomUser({
             user: dbUser,
