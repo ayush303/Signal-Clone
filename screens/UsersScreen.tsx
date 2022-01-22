@@ -1,15 +1,31 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Text, StyleSheet, Pressable, View, Image, FlatList } from 'react-native';
+import {DataStore} from '@aws-amplify/datastore';
 import UserItems from '../components/UserItems';
-import Users from '../assets/SignalAssets/dummy-data/Users';
+import { User } from '../src/models';
 
 export default function UsersScreen() {
+
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    DataStore.query(User).then(setUsers);
+  },[]);
+
+  // useEffect(() => {
+  //   // query users
+  //   const fetchUsers = async () => {
+  //     const fetchedUsers = await DataStore.query(User);
+  //     setUsers(fetchedUsers);
+  //   };
+  //   fetchUsers();
+  // }, [])
 
   return (
     <View style={styles.page}>
       
       <FlatList 
-        data={ Users }
+        data={ users }
         renderItem = {({ item }) => <UserItems user={item} />} 
         showsVerticalScrollIndicator={false} 
       />
