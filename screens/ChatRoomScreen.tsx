@@ -64,9 +64,7 @@ export default function ChatRoomScreen() {
         console.log(fetchedMessages);
     };
 
-    navigation.setOptions({title: 'Elon Musk'})
-
-    console.log("Displaying ChatRoom ID ",route.params?.id)
+    // console.log("Displaying ChatRoom ID ",route.params?.id)
 
     if(!chatRoom) {
         return <ActivityIndicator />
