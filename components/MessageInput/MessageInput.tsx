@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
-import { StyleSheet, Text, View, TextInput,Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { SimpleLineIcons, Feather, MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons';
 import {DataStore, Auth} from 'aws-amplify';
 import {Message, ChatRoom} from '../../src/models';
+import EmojiSelector from 'react-native-emoji-selector';
 
 const MessageInput = ({chatRoom}) => {
     const [message, setMessage] = useState('');
+    const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
     const sendMessage = async () => {
         
@@ -19,6 +21,7 @@ const MessageInput = ({chatRoom}) => {
         console.log("sending: ", message);
         updateLastMessage(newMessage);
         setMessage('');
+        setIsEmojiPickerOpen(false);
     }
 
     const updateLastMessage = async (newMessage) => {
@@ -39,9 +42,15 @@ const MessageInput = ({chatRoom}) => {
     }
 
     return (
-        <View style={styles.root}>
-            <View style={styles.inputContainer} >
-                <SimpleLineIcons name="emotsmile" size={24}  colors='#595959' style={{marginHorizontal: 5}} />
+        <KeyboardAvoidingView style={[styles.root, {height: isEmojiPickerOpen ? "50%" : "auto"}]}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={100}>
+            <View style={styles.row}>
+                <View style={styles.inputContainer} >
+                    <Pressable onPress={() => setIsEmojiPickerOpen((value) => !value)}>
+                        <SimpleLineIcons name="emotsmile" size={24}  colors='#595959' style={{marginHorizontal: 5}} />
+                    </Pressable>
+                
                 <TextInput 
                     style={{flex:1, marginHorizontal:5,}} 
                     value={message}
@@ -54,7 +63,15 @@ const MessageInput = ({chatRoom}) => {
             <Pressable onPress={onPress} style={styles.buttonContainer} >
                 {message ? <Ionicons name="send" size={24} color="white" /> : <AntDesign name="plus" size={24} color="white" />}
             </Pressable>
-        </View>
+            </View>
+            
+            {isEmojiPickerOpen && (<
+                EmojiSelector onEmojiSelected={(emoji) => 
+                    setMessage((currentValue) => currentValue + emoji)}
+                columns={8}
+            />
+            )}
+        </KeyboardAvoidingView>
     )
 }
 
@@ -62,9 +79,12 @@ export default MessageInput
 
 const styles = StyleSheet.create({
     root: {
-        flexDirection: 'row',
         padding: 10,
     },  
+    row: {
+        flexDirection: 'row',
+        padding: 10
+    },
     inputContainer: {
         backgroundColor: '#f2f2f2',
         flex: 1,
